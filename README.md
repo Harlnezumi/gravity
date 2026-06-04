@@ -12,3 +12,17 @@ The simulation computes the force between objects using Newton's law of universa
 ## Requirements:
 - Python 3.x
 - Pygame
+
+## Installation and Execution
+Clone the repository to your local machine.
+
+- Install the required Pygame library using your terminal:
+`pip install pygame`
+
+- Run the simulation script:
+`python logic_primitive.py`
+
+## Future updates:
+- I am planning to implement `CuPy` to run this $`O(n^2)`$ time complexity algorithm on multiple cores in parallel
+- Moreover, I'll replace the simple Euler integration algorithm with the new more accurate and complex one such as Velocity Verlet or Runge-Kutta
+
