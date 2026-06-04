@@ -23,6 +23,6 @@ Clone the repository to your local machine.
 `python logic_primitive.py`
 
 ## Future updates:
-- I am planning to implement `CuPy` to run this $`O(n^2)`$ time complexity algorithm on multiple cores in parallel
+- I am planning to implement `CuPy` to run this $`O(n^2)`$ time complexity algorithm on multiple cores on GPU in parallel
 - Moreover, I'll replace the simple Euler integration algorithm with the new more accurate and complex one such as Velocity Verlet or Runge-Kutta
 
