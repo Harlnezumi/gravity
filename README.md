@@ -20,7 +20,7 @@ Clone the repository to your local machine.
 `pip install pygame`
 
 - Run the simulation script:
-`python logic_primitive.py`
+`python euclid_single.py`
 
 ## Future updates:
 - I am planning to implement `CuPy` to run this $`O(n^2)`$ time complexity algorithm on multiple cores on GPU in parallel
