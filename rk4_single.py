@@ -31,14 +31,47 @@ class Body:
     def return_vec(self):
         return np.concatenate((self.pos, self.velocity))
 
+
 # --- simulation and logic class ---
 class Simulation:
     def __init__(self, bodies):
-        return 0
-    
+        self.bodies = bodies
+        self.Nbodies = len(bodies)
+        self.Ndim = 6
+
+        # build the state vecror
+        state_list = [body.return_vec() for body in bodies]
+        self.quant_vec = np.concatenate(np.array(state_list))
+
+        # extract masses and names
+        self.masses = np.array([body.mass for body in bodies])
+        self.names = np.array([body.name for body in bodies])
+
+    # solver for RK4
+    def set_diff_eq(self, calc_diff_eqs, **kwargs):
+        self.set_diff_eq_kwargs = kwargs
+        self.calc_diff_eqs = calc_diff_eqs
+
+    # Rk4 main logic
+    def rk4(t, dt, y, evaluate):
+
+        k1 = dt * evaluate(t, y)
+        k2 = dt * evaluate(t + 0.5 * dt, y + 0.5 * k1)
+        k3 = dt * evaluate(t + 0.5 * dt, y + 0.5 * k2)
+        k4 = dt * evaluate(t + dt, y + k3)
+
+        y_new = y + (1 / 6.0) * (k1 + 2 * k2 + 2 * k3 + k4)
+        return y_new
+
+    # evaluate the SHO at time t and y=y.
+    def evaluate_SHO(t, y, k=1):
+        v = y[1]
+        a = -(k**2) * y[0]
+        return np.array([v, a])
+
+
 center_x = screen.get_width() / 2
 center_y = screen.get_height() / 2
 
 body1 = Body("Body1", 10, 1.9891e30, [0, 0, 0], [0, 0, 0])
 print(body1.return_vec())
-
