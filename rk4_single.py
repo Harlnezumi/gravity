@@ -63,7 +63,7 @@ class Simulation:
         y_new = y + (1 / 6.0) * (k1 + 2 * k2 + 2 * k3 + k4)
         return y_new
 
-    # evaluate the SHO at time t and y=y.
+    # evaluate the SHO at time t and y=y 
     def evaluate_SHO(t, y, k=1):
         v = y[1]
         a = -(k**2) * y[0]
