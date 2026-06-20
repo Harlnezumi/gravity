@@ -55,10 +55,10 @@ class Simulation:
     # Rk4 main logic
     def rk4(self, t, dt, y):
 
-        k1 = dt * self.Nbodiesevaluate(t, y)
-        k2 = dt * self.Nbodiesevaluate(t + 0.5 * dt, y + 0.5 * k1)
-        k3 = dt * self.Nbodiesevaluate(t + 0.5 * dt, y + 0.5 * k2)
-        k4 = dt * self.Nbodiesevaluate(t + dt, y + k3)
+        k1 = dt * self.evaluate(t, y)
+        k2 = dt * self.evaluate(t + 0.5 * dt, y + 0.5 * k1)
+        k3 = dt * self.evaluate(t + 0.5 * dt, y + 0.5 * k2)
+        k4 = dt * self.evaluate(t + dt, y + k3)
 
         y_new = y + (1 / 6.0) * (k1 + 2 * k2 + 2 * k3 + k4)
         return y_new
@@ -89,5 +89,82 @@ class Simulation:
         )
 
         # package the derivatives into a 1d array
-        dy_dt = np.concatenate((vel.flatten(), acc.flatten()))
+        dy_dt = np.hstack((vel, acc)).flatten()
         return dy_dt
+
+
+def generate_bodies(num_bodies):
+    bodies = [Body("Sun", 30, 1.989e30, [0, 0, 0], [0, 0, 0])]
+    for i in range(num_bodies):
+        # Generating random properties
+        name = f"Body {i+1}"
+        r = random.uniform(0.5, 2.0) * AU
+        theta = random.uniform(0, 2 * math.pi)
+        mass = random.uniform(1e20, 1e23)
+        radius = random.randint(2, 6)
+
+        # initial coordinates
+        # z = random.uniform(-0.1 * r, 0.1 * r) # for my future use :)
+        x = r * math.cos(theta)
+        y = r * math.sin(theta)
+
+        # perfect orbital velocity
+        v = math.sqrt(GRAVITY_G * bodies[0].mass / r)
+
+        vx = -v * math.sin(theta)
+        vy = v * math.cos(theta)
+
+        # elliptical orbits
+        # vx *= random.uniform(0.9, 1.1)
+        # vy *= random.uniform(0.9, 1.1)
+
+        # adding the body to the list
+        bodies.append(Body(name, radius, mass, [x, y, 0], [vx, vy, 0]))
+
+    return bodies
+
+
+# finding the center of the screen
+center_x = screen.get_width() / 2
+center_y = screen.get_height() / 2
+
+# initialize the universe
+generated_bodies = generate_bodies(230)
+universe = Simulation(generated_bodies)
+
+current_time = 0
+running = True
+
+# main game loop
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # rk4
+    universe.quant_vec = universe.rk4(current_time, TIMESTEP, universe.quant_vec)
+    current_time += TIMESTEP
+
+    screen.fill((0, 0, 0))
+
+    # extract positions
+    current_pos = universe.quant_vec.reshape((universe.Nbodies, universe.Ndim))[:, 0:3]
+
+    # draw all bodies
+    for i in range(universe.Nbodies):
+        draw_x = current_pos[i, 0] * SCALE + center_x
+        draw_y = current_pos[i, 1] * SCALE + center_y
+
+        color = (255, 204, 0) if i == 0 else (255, 255, 255)
+
+        pygame.draw.circle(
+            surface=screen,
+            color=color,
+            center=(draw_x, draw_y),
+            radius=universe.bodies[i].radius,
+        )
+
+    pygame.display.flip()
+    clock.tick(FPS)
+
+pygame.quit()
