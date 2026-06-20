@@ -65,9 +65,36 @@ class Simulation:
 
     # evaluate the derivative at time t and y=y
     def evaluate(self, t, y):
+        # unpacking the state vector
         pos = y.reshape((self.Nbodies, self.Ndim))[:, 0:3]
         vel = y.reshape((self.Nbodies, self.Ndim))[:, 3:6]
-        return 0
+
+        # Unpack state vector
+        pos = y.reshape((self.Nbodies, self.Ndim))[:, 0:3]
+        vel = y.reshape((self.Nbodies, self.Ndim))[:, 3:6]
+
+        dr = pos[np.newaxis, :, :] - pos[:, np.newaxis, :]
+
+        # Calculate the squared distances
+        dist_sq = np.sum(dr**2, axis=-1)
+
+        # Preventing self-interaction
+        dist_sq[dist_sq == 0] = np.inf
+
+        # Calculate inverse cube of distance
+        inv_dist_cube = dist_sq ** (-1.5)
+
+        # Applying Newton's law of gravity
+        acc = GRAVITY_G * np.sum(
+            dr
+            * self.masses[np.newaxis, :, np.newaxis]
+            * inv_dist_cube[:, :, np.newaxis],
+            axis=1,
+        )
+
+        # package the derivatives into a 1d array
+        dy_dt = np.concatenate((vel.flatten(), acc.flatten()))
+        return dy_dt
 
 
 center_x = screen.get_width() / 2
