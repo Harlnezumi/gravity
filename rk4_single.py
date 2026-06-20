@@ -22,9 +22,9 @@ class Body:
     def __init__(self, name, radius, mass, pos_vec, velocity_vec):
         self.name = name
         self.mass = float(mass)
-        self.pos = np.array(pos_vec, dtype=float)
-        self.velocity = np.array(velocity_vec, dtype=float)
-        self.acceleration = np.zeros(3, dtype=float)
+        self.pos = np.array(pos_vec, dtype=np.float64)
+        self.velocity = np.array(velocity_vec, dtype=np.float64)
+        self.acceleration = np.zeros(3, dtype=np.float64)
         self.radius = radius
         pass
 
@@ -53,12 +53,12 @@ class Simulation:
         self.calc_diff_eqs = calc_diff_eqs
 
     # Rk4 main logic
-    def rk4(self, t, dt, y, evaluate):
+    def rk4(self, t, dt, y):
 
-        k1 = dt * evaluate(t, y)
-        k2 = dt * evaluate(t + 0.5 * dt, y + 0.5 * k1)
-        k3 = dt * evaluate(t + 0.5 * dt, y + 0.5 * k2)
-        k4 = dt * evaluate(t + dt, y + k3)
+        k1 = dt * self.Nbodiesevaluate(t, y)
+        k2 = dt * self.Nbodiesevaluate(t + 0.5 * dt, y + 0.5 * k1)
+        k3 = dt * self.Nbodiesevaluate(t + 0.5 * dt, y + 0.5 * k2)
+        k4 = dt * self.Nbodiesevaluate(t + dt, y + k3)
 
         y_new = y + (1 / 6.0) * (k1 + 2 * k2 + 2 * k3 + k4)
         return y_new
@@ -66,10 +66,6 @@ class Simulation:
     # evaluate the derivative at time t and y=y
     def evaluate(self, t, y):
         # unpacking the state vector
-        pos = y.reshape((self.Nbodies, self.Ndim))[:, 0:3]
-        vel = y.reshape((self.Nbodies, self.Ndim))[:, 3:6]
-
-        # Unpack state vector
         pos = y.reshape((self.Nbodies, self.Ndim))[:, 0:3]
         vel = y.reshape((self.Nbodies, self.Ndim))[:, 3:6]
 
@@ -95,10 +91,3 @@ class Simulation:
         # package the derivatives into a 1d array
         dy_dt = np.concatenate((vel.flatten(), acc.flatten()))
         return dy_dt
-
-
-center_x = screen.get_width() / 2
-center_y = screen.get_height() / 2
-
-# body1 = Body("Body1", 10, 1.9891e30, [0, 0, 0], [0, 0, 0])
-# print(body1.return_vec())
