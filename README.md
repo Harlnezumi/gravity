@@ -1,5 +1,5 @@
 # 2D Pygame Gravity Simulation
-A visual N-body gravity simulation built with Python and Pygame. This project models a central massive body (a star) and generates a randomized field of 200 smaller bodies orbiting it, visualizing gravitational interactions in real-time.
+A visual N-body gravity simulation built with Python and Pygame. This project models a central massive body (a star) and generates a randomised field of 200 smaller bodies orbiting it, visualizing gravitational interactions in real-time.
 
 ## Features
 - Calculates the gravitational pull between all active bodies on screen
@@ -22,8 +22,8 @@ Clone the repository to your local machine.
 `pip install numpy`
 
 - Run the simulation script:
-`python euclid_single.py` - for Euler Integration
-`python rk4_single.py` - for Runge-Kutta 4th order integration 
+- `python euler_single.py` - for Euler Integration
+- `python rk4_single.py` - for Runge-Kutta 4th order integration 
 
 ## Future updates:
 - I am planning to implement `CuPy` to run this $`O(n^2)`$ time complexity algorithm on multiple cores on GPU in parallel
