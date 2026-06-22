@@ -12,15 +12,18 @@ The simulation computes the force between objects using Newton's law of universa
 ## Requirements:
 - Python 3.x
 - Pygame
+- numpy
 
 ## Installation and Execution
 Clone the repository to your local machine.
 
-- Install the required Pygame library using your terminal:
+- Install the required libraries using your terminal:
 `pip install pygame`
+`pip install numpy`
 
 - Run the simulation script:
-`python euclid_single.py`
+`python euclid_single.py` - for Euler Integration
+`python rk4_single.py` - for Runge-Kutta 4th order integration 
 
 ## Future updates:
 - I am planning to implement `CuPy` to run this $`O(n^2)`$ time complexity algorithm on multiple cores on GPU in parallel
