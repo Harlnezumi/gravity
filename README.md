@@ -12,7 +12,7 @@ The simulation computes the force between objects using Newton's law of universa
 ## Requirements:
 - Python 3.x
 - Pygame
-- numpy
+- Numpy
 
 ## Installation and Execution
 Clone the repository to your local machine.
