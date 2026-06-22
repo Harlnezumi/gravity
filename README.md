@@ -22,8 +22,8 @@ Clone the repository to your local machine.
 `pip install numpy`
 
 - Run the simulation script:
-- `python euler_single.py` - for Euler Integration
-- `python rk4_single.py` - for Runge-Kutta 4th order integration 
+- `python euler_single.py` - for Euler method
+- `python rk4_single.py` - for Runge-Kutta 4th order method 
 
 ## Future updates:
 - I am planning to implement `CuPy` to run this $`O(n^2)`$ time complexity algorithm on multiple cores on GPU in parallel
