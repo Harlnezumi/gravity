@@ -22,7 +22,7 @@ Clone the repository to your local machine.
 `pip install numpy`
 
 - Run the simulation script:
-- `python euler_single.py` - for Euler method
+- `python euler_single.py` - for Euler's method
 - `python rk4_single.py` - for Runge-Kutta 4th order method 
 
 ## Future updates:
